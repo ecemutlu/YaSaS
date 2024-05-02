@@ -15,9 +15,7 @@
 
 //builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-////builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-////	.AddEntityFrameworkStores<ApplicationDbContext>();
-//builder.Services.AddControllersWithViews();
+
 
 //var app = builder.Build();
 
@@ -52,6 +50,7 @@ using EntityLayer.Concrete;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using YaSaS_UserInterface.Data;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -63,6 +62,9 @@ builder.Services.AddDbContext<mydbContext>(
     options => options.UseSqlServer
     (builder.Configuration.GetConnectionString("conn")));
 
+builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+	.AddEntityFrameworkStores<ApplicationDbContext>();
+builder.Services.AddControllersWithViews();
 builder.Services.AddIdentity<User, Role>().AddEntityFrameworkStores<mydbContext>();
 
 var app = builder.Build();

@@ -30,7 +30,7 @@ namespace YaSaS_UserInterface.Controllers
             {
                 Email = p.Email,
                 UserName = p.Username,
-                //Building = p.Building
+				
             };
 
             if (p.Password == p.ConfirmPassword)

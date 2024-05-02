@@ -9,6 +9,6 @@ namespace YaSaS_UserInterface.Models
 		public string? ConfirmPassword { get; set; }
 		public string? Email { get; set; }
 		public string? PhoneNumber { get; set; }
-		public Building? Building { get; set; }
+		public int BuildingId { get; set; }
 	}
 }
