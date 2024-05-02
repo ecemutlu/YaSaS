@@ -1,0 +1,57 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>aspnet-YaSaS_UserInterface-05981b9c-2439-466c-91a7-4a771e430d6c</UserSecretsId>
+    <RootNamespace>YaSaS_UserInterface</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="BusinessLayer\**" />
+    <Compile Remove="DataAccessLayer\**" />
+    <Compile Remove="EntityLayer\**" />
+    <Content Remove="BusinessLayer\**" />
+    <Content Remove="DataAccessLayer\**" />
+    <Content Remove="EntityLayer\**" />
+    <EmbeddedResource Remove="BusinessLayer\**" />
+    <EmbeddedResource Remove="DataAccessLayer\**" />
+    <EmbeddedResource Remove="EntityLayer\**" />
+    <None Remove="BusinessLayer\**" />
+    <None Remove="DataAccessLayer\**" />
+    <None Remove="EntityLayer\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\login-form-18\.DS_Store" />
+    <None Include="wwwroot\login-form-18\css\.DS_Store" />
+    <None Include="wwwroot\login-form-18\css\bootstrap\.DS_Store" />
+    <None Include="wwwroot\login-form-18\css\bootstrap\mixins\.DS_Store" />
+    <None Include="wwwroot\login-form-18\fonts\.DS_Store" />
+    <None Include="wwwroot\login-form-18\images\.DS_Store" />
+    <None Include="wwwroot\login-form-18\js\.DS_Store" />
+    <None Include="wwwroot\login-form-18\scss\.DS_Store" />
+    <None Include="wwwroot\login-form-18\scss\bootstrap\.DS_Store" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="6.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="BusinessLayer\BusinessLayer.csproj" />
+    <ProjectReference Include="DataAccessLayer\DataAccessLayer.csproj" />
+    <ProjectReference Include="EntityLayer\EntityLayer.csproj" />
+  </ItemGroup>
+
+</Project>
