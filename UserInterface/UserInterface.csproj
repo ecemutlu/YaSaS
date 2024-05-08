@@ -8,6 +8,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Include="wwwroot\login-form-18\.DS_Store" />
+    <None Include="wwwroot\login-form-18\css\.DS_Store" />
+    <None Include="wwwroot\login-form-18\css\bootstrap\.DS_Store" />
+    <None Include="wwwroot\login-form-18\css\bootstrap\mixins\.DS_Store" />
+    <None Include="wwwroot\login-form-18\fonts\.DS_Store" />
+    <None Include="wwwroot\login-form-18\images\.DS_Store" />
+    <None Include="wwwroot\login-form-18\js\.DS_Store" />
+    <None Include="wwwroot\login-form-18\scss\.DS_Store" />
+    <None Include="wwwroot\login-form-18\scss\bootstrap\.DS_Store" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Components.QuickGrid.EntityFrameworkAdapter" Version="8.0.4" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="8.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.4" />
@@ -19,6 +31,17 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\BusinessLayer\BusinessLayer.csproj" />
+    <ProjectReference Include="..\DataAccessLayer\DataAccessLayer.csproj" />
+    <ProjectReference Include="..\EntityLayer\EntityLayer.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Areas\Admin\Data\" />
+    <Folder Include="Areas\Admin\Models\" />
   </ItemGroup>
 
 </Project>

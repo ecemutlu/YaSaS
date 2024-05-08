@@ -38,5 +38,6 @@ namespace UserInterface.Areas.Identity.Pages.Account
                 return RedirectToPage();
             }
         }
+
     }
 }
