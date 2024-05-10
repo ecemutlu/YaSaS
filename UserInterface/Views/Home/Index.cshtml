@@ -1,5 +1,4 @@
-﻿@model UserDto
-@{
+﻿@{
     ViewData["Title"] = "Structural Health Monitor";
 }
 
@@ -318,9 +317,7 @@
                             
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">aaaaa</span>
-                                <img class="img-profile rounded-circle"
-                                     src="~/startbootstrap-sb-admin-2-gh-pages/img/undraw_profile.svg">
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">@User.Identity?.Name</span>                               
                             </a>   
                             
                             <!-- Dropdown - User Information -->
@@ -339,7 +336,7 @@
                                     Activity Log
                                 </a>
                                 <div class="dropdown-divider"></div>                                
-                                <form id="logoutForm" asp-area="Identity" asp-page="/Identity/Account/Manage/Logout" onsubmit="return confirm('Are you sure you want to logout?');">
+                                <form id="logoutForm" asp-area="Identity" asp-page="/Account/Logout" onsubmit="return confirm('Are you sure you want to logout?');">
                                     <button type="submit" class="dropdown-item">
                                         <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                                         Logout

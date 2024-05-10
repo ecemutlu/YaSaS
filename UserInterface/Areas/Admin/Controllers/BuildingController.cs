@@ -1,12 +1,33 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using DataAccessLayer.Context;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using UserInterface.Areas.Admin.Models;
 
 namespace UserInterface.Areas.Admin.Controllers
 {
-    public class BuildingController : Controller
+	[Area("Admin")]
+
+	public class BuildingController : Controller
     {
-        public IActionResult EditBuilding()
+		private readonly mydbContext _context;
+
+		public BuildingController(mydbContext context)
+		{
+			_context = context;
+		}
+
+        [HttpGet]
+        public IActionResult AddBuilding()
         {
             return View();
         }
-    }
+
+        [HttpPost]
+		public async Task<IActionResult> AddBuilding([Bind("Name,NumberOfFloor,CityId,TownId")]BuildingDto building)
+		{
+			_context.Building.Add(building);
+			await _context.SaveChangesAsync();
+			return View(building);
+		}
+	}
 }

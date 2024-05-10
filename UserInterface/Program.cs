@@ -25,11 +25,6 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddRazorPages();
 
-//builder.Services.AddMvc().AddRazorPagesOptions(options =>
-//{
-//    options.Conventions.AddAreaPageRoute("Identity", "/Login", "");
-//});
-
 //builder.Services.ConfigureApplicationCookie(options =>
 //{
 //    options.LoginPath = "/Areas/Identity/Account/Login";
@@ -67,21 +62,22 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
+#pragma warning disable ASP0014 // Suggest using top level route registrations
+app.UseEndpoints(endpoints =>
+{
+	endpoints.MapControllerRoute(
+	  name: "areas",
+	  pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
+	);
+});
+#pragma warning restore ASP0014 // Suggest using top level route registrations
 
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
-    
-
 
 app.MapRazorPages();
 
-app.UseEndpoints(endpoints =>
-{
-    endpoints.MapControllerRoute(
-      name: "areas",
-      pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
-    );
-});
+
 
 app.Run();
