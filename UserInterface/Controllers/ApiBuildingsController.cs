@@ -8,9 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using DataAccessLayer.Context;
 using EntityLayer.Concrete;
 
-namespace UserInterface.Areas.Admin.Controllers
-{
-    [Area("Admin")]
+namespace UserInterface.Controllers
+{    
     [Route("api/[controller]")]
     [ApiController]
     public class ApiBuildingsController : ControllerBase

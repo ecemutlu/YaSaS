@@ -1,0 +1,37 @@
+﻿@using EntityLayer.Concrete
+@model List<RequestedReport>
+@{
+	ViewData["Title"] = "List Reports";
+}
+
+<head>
+	@await Html.PartialAsync("~/Views/Shared/_HeaderIndex.cshtml")
+	<!-- Custom styles for this page -->
+	<link href="~/startbootstrap-sb-admin-2-gh-pages/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+</head>
+
+<h3>Requested Reports</h3>
+<div class="card-body">
+	<div class="table-responsive">
+		<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+			<tr>
+				<th>#</th>
+				<th>Date Range</th>
+				<th>Report Type</th>
+				<th>Status</th>
+				<th>Report</th>
+			</tr>
+			@foreach (var i in Model)
+			{
+				<tr>
+					<td>@i.DateRange</td>
+					<td>@i.ReportType</td>
+					<td>@i.Status</td>
+					<td>
+						<a href="#" class="btn btn-outline-info">Show</a>
+					</td>
+				</tr>
+			}
+		</table>
+	</div>
+</div>
