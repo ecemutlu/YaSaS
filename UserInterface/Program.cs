@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages;
 using UserInterface.Data;
+using UserInterface.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +16,16 @@ builder.Services.AddDbContext<mydbContext>(options =>
 	options.UseSqlServer(connectionString));
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 	options.UseSqlServer(connectionString));
+
+// Eklenen HttpClient servisi
+builder.Services.AddHttpClient<CityTownService>(client =>
+{
+	client.BaseAddress = new Uri("https://turkiyeapi.dev/"); // Base address ayarlanıyor
+});
+
+// Yorum: CityTownService eklenmesi
+// Eğer servis Lifetime'ını kontrol etmek istiyorsanız, aşağıdaki gibi Scoped olarak da ekleyebilirsiniz.
+// builder.Services.AddScoped<CityTownService>();
 
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
@@ -81,3 +92,4 @@ app.MapRazorPages();
 
 
 app.Run();
+

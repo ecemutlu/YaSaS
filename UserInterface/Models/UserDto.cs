@@ -18,8 +18,8 @@ namespace UserInterface.Models
         public string? ConfirmPassword { get; set; }
 
         [EmailAddress]
-        public string? Email { get; set; }
-        public string? PhoneNumber { get; set; }
+        public new string? Email { get; set; }
+        public new string? PhoneNumber { get; set; }
         public Building? Building { get; set; }
     }
 }
