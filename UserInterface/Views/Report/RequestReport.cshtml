@@ -1,0 +1,43 @@
+﻿@using EntityLayer.Concrete
+@model RequestedReport
+@{
+	ViewData["Title"] = "Request Report";
+}
+
+<head>
+	@await Html.PartialAsync("~/Views/Shared/_HeaderIndex.cshtml")
+	<!-- Custom styles for this page -->
+	
+</head>
+<body>
+	<div class="container justify-content-center">
+		<form asp-action="RequestReport" method="post" asp-validation-summary="ModelOnly" class="tex login-form col-md-6">
+			<div class="column ">
+				<div class="row">
+					<div class="form-group col-md-5">
+						<label class="control-label">Building Name</label>
+						<div>
+							@Html.TextBoxFor(m => m.DateRange, new { @class = "form-control" })
+						</div>
+					</div>
+					<div class="form-group col-md-5">
+						<label class="control-label">Number Of Floors</label>
+						<div>
+							@Html.TextBoxFor(m => m.ReportType, new { @class = "form-control" })
+						</div>
+					</div>
+				</div>							
+				<div class="row">
+					<div class="form-group col-md-3 ">
+						<button id="login-submit" type="submit" class="btn btn-primary rounded submit p-3 px-5">Create</button>
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
+	<script src="~/login-form-18/js/jquery.min.js"></script>
+	<script src="~/login-form-18/js/popper.js"></script>
+	<script src="~/login-form-18/js/bootstrap.min.js"></script>
+	<script src="~/login-form-18/js/main.js"></script>
+
+</body>

@@ -19,5 +19,6 @@ namespace EntityLayer.Concrete
 		public string? ReportType { get; set; }
 		public required string DateRange { get; set; }
 		public required string Status { get; set; }
+		public string? ReportUrl { get; set; }
 	}
 }

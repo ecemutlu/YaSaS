@@ -21,17 +21,28 @@
 				<th>Status</th>
 				<th>Report</th>
 			</tr>
-			@foreach (var i in Model)
+			@if (Model == null || !Model.Any())
 			{
 				<tr>
-					<td>@i.DateRange</td>
-					<td>@i.ReportType</td>
-					<td>@i.Status</td>
-					<td>
-						<a href="#" class="btn btn-outline-info">Show</a>
-					</td>
+					<td>No report has been requested yet</td>
 				</tr>
 			}
+			else{
+				@foreach (var i in Model)
+				{
+					<tr>
+						<td>@i.DateRange</td>
+						<td>@i.ReportType</td>
+						<td>@i.Status</td>
+						<td>
+							@if (i.Status == "Completed")
+							{
+								<a href="@i.ReportUrl" class="btn btn-primary">Show Report</a>
+							}
+						</td>
+					</tr>
+				}
+			}					
 		</table>
 	</div>
 </div>

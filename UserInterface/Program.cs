@@ -18,28 +18,23 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 	options.UseSqlServer(connectionString));
 
 builder.Services.AddHttpClient();
-
-
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddIdentity<CustomUser, IdentityRole>().AddDefaultTokenProviders()
-    .AddEntityFrameworkStores<ApplicationDbContext>();
+	.AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();
-
 builder.Services.AddRazorPages();
-
-//builder.Services.ConfigureApplicationCookie(options =>
-//{
-//    options.LoginPath = "/Areas/Identity/Account/Login";
-//});
 builder.Services.AddMvc();
+
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
+
 	app.UseMigrationsEndPoint();
+
 }
 else
 {
@@ -47,7 +42,6 @@ else
 	// The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
 	app.UseHsts();
 }
-
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
@@ -67,8 +61,8 @@ app.UseEndpoints(endpoints =>
 #pragma warning restore ASP0014 // Suggest using top level route registrations
 
 app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+	name: "default",
+	pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.MapRazorPages();
 
