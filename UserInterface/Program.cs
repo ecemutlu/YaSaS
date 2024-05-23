@@ -11,7 +11,7 @@ using UserInterface.Services;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-var connectionString = builder.Configuration.GetConnectionString("conn") ?? throw new InvalidOperationException("Connection string 'conn' not found.");
+var connectionString = builder.Configuration.GetConnectionString("conn");
 builder.Services.AddDbContext<mydbContext>(options =>
 	options.UseSqlServer(connectionString));
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -28,9 +28,10 @@ builder.Services.AddHttpClient<CityTownService>(client =>
 // builder.Services.AddScoped<CityTownService>();
 
 
+
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddDefaultTokenProviders()
+builder.Services.AddIdentity<CustomUser, IdentityRole>().AddDefaultTokenProviders()
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();
 
@@ -40,15 +41,6 @@ builder.Services.AddRazorPages();
 //{
 //    options.LoginPath = "/Areas/Identity/Account/Login";
 //});
-//builder.Services.AddMvc(config =>
-//{
-//    //kural ekle authanticate olan girebilsin
-//    var policy = new AuthorizationPolicyBuilder()
-//    .RequireAuthenticatedUser().Build();
-//    //kuralı kullan
-//    config.Filters.Add(new AuthorizeFilter(policy));
-//}
-//);
 builder.Services.AddMvc();
 
 var app = builder.Build();
