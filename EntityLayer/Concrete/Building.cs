@@ -15,9 +15,9 @@ namespace EntityLayer.Concrete
 		public string? Name { get; set; }
 		public int NumofFloor { get; set; }
 		[ForeignKey("City")]
-		public string? CityId { get; set; }
+		public int CityId { get; set; }
 		[ForeignKey("Town")]
-		public string? TownId { get; set; }
+		public int TownId { get; set; }
 		public string? Address { get; set; }
 		public float Longitude { get; set; }
 		public float Latitude { get; set; }

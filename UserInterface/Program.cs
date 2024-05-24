@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages;
 using UserInterface.Data;
+using UserInterface.Models;
 using UserInterface.Services;
 
 var builder = WebApplication.CreateBuilder(args);
