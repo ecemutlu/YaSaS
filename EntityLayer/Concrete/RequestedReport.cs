@@ -15,10 +15,10 @@ namespace EntityLayer.Concrete
 		[Key]
 		public int Id { get; set; }
 		[ForeignKey("AspNetUsers")]
-		public required string UserId { get; set; }
-		public string? ReportType { get; set; }
+		public string? UserId { get; set; }
+		public required string ReportType { get; set; }
 		public required string DateRange { get; set; }
-		public required string Status { get; set; }
+		public string? Status { get; set; }
 		public string? ReportUrl { get; set; }
 	}
 }

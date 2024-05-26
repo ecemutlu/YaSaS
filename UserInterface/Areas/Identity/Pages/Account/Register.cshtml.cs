@@ -5,6 +5,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Text.Encodings.Web;
@@ -81,6 +82,7 @@ namespace UserInterface.Areas.Identity.Pages.Account
 			public string Username { get; set; }
 			[Required]
 			[Display(Name = "BuildingName")]
+            [ForeignKey("Building")]
 			public int BuildingId { get; set; }
 			/// <summary>
 			///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -109,17 +111,8 @@ namespace UserInterface.Areas.Identity.Pages.Account
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
+
         }
-		public async Task OnGetAsyncBuilding(string returnUrl = null)
-		{
-			ReturnUrl = returnUrl;
-			ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
-			Buildings = await _mydbContext.Building.Select(b => new SelectListItem
-			{
-				Value = b.Id.ToString(),
-				Text = b.Name
-			}).ToListAsync();
-		}
 
 		public async Task OnGetAsync(string returnUrl = null)
         {
@@ -139,9 +132,7 @@ namespace UserInterface.Areas.Identity.Pages.Account
             if (ModelState.IsValid)
             {
 				var user = new CustomUser
-				{
-					UserName = Input.Username,
-					Email = Input.Email,
+				{					
 					BuildingId = Input.BuildingId
 				};
 
@@ -179,11 +170,16 @@ namespace UserInterface.Areas.Identity.Pages.Account
                 foreach (var error in result.Errors)
                 {
                     ModelState.AddModelError(string.Empty, error.Description);
-                }
-            }
-
-            // If we got this far, something failed, redisplay form
-            return Page();
+                }                
+			}
+			// Repopulate the Buildings list when the page reloads due to validation errors
+			Buildings = await _mydbContext.Building.Select(b => new SelectListItem
+			{
+				Value = b.Id.ToString(),
+				Text = b.Name
+			}).ToListAsync();
+			// If we got this far, something failed, redisplay form
+			return Page();
         }
 
         private IdentityUser CreateUser()
@@ -194,7 +190,7 @@ namespace UserInterface.Areas.Identity.Pages.Account
             }
             catch
             {
-                throw new InvalidOperationException($"Can't create an instance of '{nameof(IdentityUser)}'. " +
+                throw new InvalidOperationException($"Can't create an instance of '{nameof(CustomUser)}'. " +
                     $"Ensure that '{nameof(IdentityUser)}' is not an abstract class and has a parameterless constructor, or alternatively " +
                     $"override the register page in /Areas/Identity/Pages/Account/Register.cshtml");
             }

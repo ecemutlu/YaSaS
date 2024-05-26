@@ -1,5 +1,6 @@
 ﻿@using EntityLayer.Concrete
 @model List<RequestedReport>
+
 @{
 	ViewData["Title"] = "List Reports";
 }
@@ -12,7 +13,7 @@
 <div class="col-md-4">
 	<h3>Requested Reports</h3>
 </div>
-
+@await Html.PartialAsync("~/Views/Report/RequestReport.cshtml")
 
 <div class="card-body">
 	<div class="table-responsive">
