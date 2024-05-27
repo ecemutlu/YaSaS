@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,8 +12,9 @@ namespace EntityLayer.Concrete
 	{
 		[Key]
         public int Id { get; set; }
+
+		[ForeignKey("Building")]
 		public int BuildingId { get; set; }
-		public Building? Building { get; set; }
 		public string? PlaceDescription { get; set; }
     }
 }

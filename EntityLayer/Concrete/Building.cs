@@ -19,10 +19,10 @@ namespace EntityLayer.Concrete
 		[ForeignKey("Town")]
 		public int TownId { get; set; }
 		public string? Address { get; set; }
-		public float Longitude { get; set; }
-		public float Latitude { get; set; }
-		public float MaxX { get; set; }
-		public float MaxY { get; set; }
-		public float MaxZ { get; set; }
+		public float? Longitude { get; set; }
+		public float? Latitude { get; set; }
+		public float? MaxX { get; set; }
+		public float? MaxY { get; set; }
+		public float? MaxZ { get; set; }
 	}
 }

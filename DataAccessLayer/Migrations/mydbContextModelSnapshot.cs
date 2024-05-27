@@ -62,7 +62,7 @@ namespace DataAccessLayer.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Building");
+                    b.ToTable("Building", (string)null);
                 });
 
             modelBuilder.Entity("EntityLayer.Concrete.City", b =>
@@ -78,7 +78,7 @@ namespace DataAccessLayer.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("City");
+                    b.ToTable("City", (string)null);
                 });
 
             modelBuilder.Entity("EntityLayer.Concrete.Data", b =>
@@ -100,7 +100,7 @@ namespace DataAccessLayer.Migrations
 
                     b.HasKey("SensorId", "TimeStamp");
 
-                    b.ToTable("Data");
+                    b.ToTable("Data", (string)null);
                 });
 
             modelBuilder.Entity("EntityLayer.Concrete.RequestedReport", b =>
@@ -133,7 +133,7 @@ namespace DataAccessLayer.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("RequestedReport");
+                    b.ToTable("RequestedReport", (string)null);
                 });
 
             modelBuilder.Entity("EntityLayer.Concrete.Sensor", b =>
@@ -154,7 +154,7 @@ namespace DataAccessLayer.Migrations
 
                     b.HasIndex("BuildingId");
 
-                    b.ToTable("Sensor");
+                    b.ToTable("Sensor", (string)null);
                 });
 
             modelBuilder.Entity("EntityLayer.Concrete.Town", b =>
@@ -175,7 +175,7 @@ namespace DataAccessLayer.Migrations
 
                     b.HasIndex("CityId");
 
-                    b.ToTable("Town");
+                    b.ToTable("Town", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
