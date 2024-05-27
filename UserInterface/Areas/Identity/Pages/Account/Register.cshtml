@@ -31,8 +31,8 @@
 						<form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="login-form">
 							<div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
 							<div class="form-group">
-								<input asp-for="Input.Username" class="form-control rounded-left" aria-required="true" placeholder="Email" />
-								<span asp-validation-for="Input.Username" class="text-danger"></span>
+								<input asp-for="Input.Email" class="form-control rounded-left" aria-required="true" placeholder="Email" />
+								<span asp-validation-for="Input.Email" class="text-danger"></span>
 							</div>
 							@* <div class="form-group">
 								<input asp-for="Input.Email" class="form-control rounded-left" aria-required="true" placeholder="Email" />
