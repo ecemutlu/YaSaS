@@ -73,30 +73,30 @@
 			// Seçilen şehrin ID'sini al
 			var cityId = $("#CityId").val();
 
-			// Şehir ID'si boş ise ilçe dropdown listesini temizle
-			if (cityId == "") {
+			if (!cityId) {
+				// Şehir seçimi yapılmadıysa ilçe listesini temizle
 				$("#TownId").empty();
 				$("#TownId").append($('<option>').text("Select Town").attr('value', ""));
 				return;
 			}
 
-			// AJAX isteği göndererek ilçe bilgilerini al
+			// AJAX çağrısı ile ilçeleri yükle
 			$.ajax({
-				url: "/Admin/Building/GetTowns",
-				type: "GET",
-				data: { cityId: cityId },
+				url: '/Building/GetTowns', // AJAX çağrısının yapılacağı URL
+				type: 'GET', // HTTP istek metodu
+				data: { cityId: cityId }, // Gönderilen data
 				success: function (data) {
-					// İlçe dropdown listesini güncelle
-					$("#TownId").empty();
+					// Başarılı olursa ilçe dropdown'ını güncelle
+					$("#TownId").empty(); // Mevcut girdileri temizle
 					$("#TownId").append($('<option>').text("Select Town").attr('value', ""));
-					$.each(data, function (index, item) {
+					data.forEach(function (item) {
 						$("#TownId").append($('<option>').text(item.text).attr('value', item.value));
 					});
 				},
 				error: function () {
-					// Hata durumunda ilçe dropdown listesini temizle
+					// Hata durumunda kullanıcıya bilgi ver
 					$("#TownId").empty();
-					$("#TownId").append($('<option>').text("Select Town").attr('value', ""));
+					$("#TownId").append($('<option>').text("Failed to load towns").attr('value', ""));
 				}
 			});
 		}

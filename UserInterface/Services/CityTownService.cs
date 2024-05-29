@@ -15,7 +15,7 @@ namespace UserInterface.Services
     {
         private readonly HttpClient _httpClient;
 		private readonly ILogger<CityTownService> _logger; // Logger'ı sınıfınıza ekleyin
-		private List<City> _citiesCache; // Şehirlerin ve ilçelerin önbelleği
+		private List<City> _citiesCache = null; // Şehirlerin ve ilçelerin önbelleği
 
 		// Constructor
 		public CityTownService(HttpClient httpClient, ILogger<CityTownService> logger)
@@ -30,10 +30,15 @@ namespace UserInterface.Services
             _httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
 		}
 		*/
-		
+
 		// Şehir listesini alır
 		public async Task<List<SelectListItem>> GetCities()
-        {
+		{
+			if (_citiesCache != null)  // Cache kontrolü
+			{
+				return _citiesCache.Select(c => new SelectListItem { Value = c.Id.ToString(), Text = c.Name }).ToList();
+			}
+
 			try
 			{
 				var response = await _httpClient.GetAsync("https://turkiyeapi.dev/api/v1/provinces");
@@ -41,54 +46,46 @@ namespace UserInterface.Services
 				{
 					var json = await response.Content.ReadAsStringAsync();
 					var citiesData = JsonConvert.DeserializeObject<CityResponse>(json);
-
 					if (citiesData != null && citiesData.Data != null)
 					{
-						_citiesCache = citiesData.Data; // Şehirleri ve ilçeleri önbelleğe al
-						return _citiesCache.Select(c => new SelectListItem
-						{
-							Value = c.Id.ToString(),
-							Text = c.Name
-						}).ToList();
-					}
+						_citiesCache = citiesData.Data;
+                        // Cache'i doldurduktan sonra alfabetik sırayla şehirleri döndür
+                        return _citiesCache.OrderBy(c => c.Name).Select(c => new SelectListItem { Value = c.Id.ToString(), Text = c.Name }).ToList();
+                    }
 				}
 				else
 				{
-					// Hata durumunda loglama yapılabilir
 					_logger.LogError("Şehirler API isteği başarısız oldu: {StatusCode}", response.StatusCode);
 				}
 			}
 			catch (Exception ex)
 			{
-				// İstisna durumunda loglama yapılabilir
 				_logger.LogError(ex, "Şehirler API isteği sırasında bir hata oluştu.");
 			}
 
-			// Hata durumunda boş bir liste döndürülür
 			return new List<SelectListItem>();
 		}
 
-		
+
 		// İlçe listesini alır
 		public async Task<List<SelectListItem>> GetTowns(int cityId)
 		{
-			if (_citiesCache == null)
+			if (_citiesCache == null || !_citiesCache.Any())
 			{
-				_logger.LogError("Şehirler henüz yüklenmedi. Önce şehirleri yükleyin.");
-				return new List<SelectListItem>();
+				await GetCities();  // Eğer cache boşsa, şehirleri tekrar yüklemeye çalış
+				if (_citiesCache == null || !_citiesCache.Any())
+				{
+					_logger.LogError("Şehirler yüklendikten sonra ilçe bilgileri yüklenemedi.");
+					return new List<SelectListItem>();
+				}
 			}
 
 			var city = _citiesCache.FirstOrDefault(c => c.Id == cityId);
 			if (city != null && city.Districts != null)
 			{
-				return city.Districts.Select(t => new SelectListItem
-				{
-					Value = t.Id.ToString(),
-					Text = t.Name
-				}).ToList();
+				return city.Districts.Select(t => new SelectListItem { Value = t.Id.ToString(), Text = t.Name }).ToList();
 			}
 
-			// Hata durumunda boş bir liste döndürülür
 			return new List<SelectListItem>();
 		}
 	}
