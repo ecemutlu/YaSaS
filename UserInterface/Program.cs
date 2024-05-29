@@ -13,6 +13,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 var connectionString = builder.Configuration.GetConnectionString("conn");
+
+// DbContext'ler için SQL Server bağlantısı kuruluyor
 builder.Services.AddDbContext<mydbContext>(options =>
 	options.UseSqlServer(connectionString));
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -32,12 +34,28 @@ builder.Services.AddHttpClient<CityTownService>(client =>
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-builder.Services.AddIdentity<CustomUser, IdentityRole>().AddDefaultTokenProviders()
+// Identity servisleri CustomUser ve IdentityRole ile yapılandırılıyor
+builder.Services.AddIdentity<CustomUser, IdentityRole>()
+	.AddDefaultTokenProviders()
 	.AddEntityFrameworkStores<ApplicationDbContext>();
+
+// MVC ve Razor Pages servisleri ekleniyor
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 builder.Services.AddMvc();
 
+
+// Kimlik doğrulama yapılandırması ekleniyor
+builder.Services.AddAuthentication(options =>  // Cookie tabanlı kimlik doğrulama için varsayılan yapılandırma
+{
+    options.DefaultAuthenticateScheme = IdentityConstants.ApplicationScheme;
+    options.DefaultChallengeScheme = IdentityConstants.ApplicationScheme;
+})
+.AddCookie(options =>  // Cookie ayarları
+{
+    options.LoginPath = "/Account/Login"; // Kullanıcı yetkisiz bir sayfaya erişmeye çalışırsa yönlendirilecek sayfa
+    options.ExpireTimeSpan = TimeSpan.FromMinutes(60); // Cookie'nin geçerlilik süresi
+});
 
 var app = builder.Build();
 
@@ -59,6 +77,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+// Kimlik doğrulama ve yetkilendirme middleware'leri ekleniyor
 app.UseAuthentication();
 app.UseAuthorization();
 
