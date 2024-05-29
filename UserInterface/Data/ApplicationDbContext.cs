@@ -6,12 +6,15 @@ using UserInterface.Models;
 
 namespace UserInterface.Data
 {
-	public class ApplicationDbContext : IdentityDbContext<CustomUser>
+    // Identity ile CustomUser tipini kullanan ApplicationDbContext sınıfı
+    public class ApplicationDbContext : IdentityDbContext<CustomUser>
 	{
 		public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
 			: base(options)
 		{			
 		}
-		DbSet<Building> Building { get; set; }
-	}
+        // Binaların saklandığı DbSet, diğer sınıflar tarafından erişilebilir olmalı
+        public DbSet<Building> Building { get; set; }
+        public DbSet<RequestedReport> RequestedReport { get; set; }
+    }
 }

@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
+using EntityLayer.Concrete;
 using Microsoft.AspNetCore.Identity;
 
 namespace UserInterface.Models
@@ -7,5 +8,9 @@ namespace UserInterface.Models
 	{
 		[ForeignKey("Building")]
         public int BuildingId { get; set; }
+
+
+        // Building nesnesine doğrudan erişim sağlayan navigation property
+        public virtual Building Building { get; set; }
     }
 }
