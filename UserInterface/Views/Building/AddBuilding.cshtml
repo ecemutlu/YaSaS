@@ -1,26 +1,18 @@
 ﻿@using UserInterface.Models
 @model BuildingDto
-@{
-	//ViewData["Title"] = "Edit";
+@{	
 	ViewData["Title"] = "Add Building";
 }
-<h2>Add Building</h2>
+
 
 <html lang="en">
 <head>
-	<title>Add Building</title>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-	<link href="https://fonts.googleapis.com/css?family=Lato:300,400,700&display=swap" rel="stylesheet">
-
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-	
-	<link rel="stylesheet" href="~/login-form-18/css/style.css">
+	@await Html.PartialAsync("~/Views/Shared/_HeaderIndex.cshtml")
 </head>
 <body>
 	<div class="container">
 		<form asp-action="AddBuilding" method="post" asp-validation-summary="ModelOnly" class="tex login-form">
+			<h2>Add Building</h2>
 			<div class="column ">
 				<div class="row">
 					<div class="form-group col-md-5">
@@ -61,8 +53,8 @@
 					</div>
 				</div>
 				<div class="row">
-					<div class="form-group col-md-3 ">
-						<button id="login-submit" type="submit" class="btn btn-primary rounded submit p-3 px-5">Create</button>
+					<div class="form-group col-md-10 text-right ">
+						<button id="login-submit" type="submit" class="btn btn-primary btn-lg rounded submit">Create</button>
 					</div>
 				</div>				
 			</div>

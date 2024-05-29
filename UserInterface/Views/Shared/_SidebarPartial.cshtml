@@ -7,73 +7,53 @@
 }
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.3/font/bootstrap-icons.css" rel="stylesheet">
 <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+    <!-- Sidebar - Brand -->
+    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/Home/Index">
+        <div class="sidebar-brand-icon">
+            <i class="bi bi-building"></i>
+        </div>
+        <div class="sidebar-brand-text mx-3">Health Structure Monitor</div>
+    </a>
+    <div class="mt-4"></div>
+    <!-- Nav Item - Add Building -->
+    <li class="nav-item">
+        @if (isAdmin)
+        {
+            <a class="nav-link" href="/Building/AddBuilding">
+                <i class="bi bi-plus-circle"></i>
+                <span>Add Building</span>
+            </a>
+        }
+        else
+        {
+            <span class="nav-link" title="You don't have authority" style="cursor: not-allowed;">
+                <i class="bi bi-plus-circle"></i>
+                <span>Add Building</span>
+            </span>
+        }
+    </li>
 
-	<!-- Sidebar - Brand -->
-	<a class="sidebar-brand d-flex justify-content-center" href="/Home/Index">
-		<div class="sidebar-brand-icon">
-			<i class="bi bi-building"></i>
-		</div>
-		<div style="margin-top: auto" class="sidebar-brand-text mx-3">Health Structure Monitor</div>
-	</a>
-	<!-- Divider -->
-	<hr class="sidebar-divider">
+    <!-- Nav Item - Requested Reports -->
+    <li class="nav-item">
+        <a class="nav-link" href="/Report/ListReports">
+            <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
+            <span>Requested Reports</span>
+        </a>
+    </li>
 
-	@* <!-- Nav Item - Pages Collapse Menu -->
-	<li class="nav-item">
-	<a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
-	aria-expanded="true" aria-controls="collapsePages">
-	<i class="fas fa-fw fa-folder"></i>
-	<span>Pages</span>
-	</a>
-	<div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-	<div class="bg-white py-2 collapse-inner rounded">
-	<h6 class="collapse-header">Login Screens:</h6>
-	<a class="collapse-item" href="login.html">Login</a>
-	<a class="collapse-item" href="register.html">Register</a>
-	<a class="collapse-item" href="forgot-password.html">Forgot Password</a>
-	<div class="collapse-divider"></div>
-	<h6 class="collapse-header">Other Pages:</h6>
-	<a class="collapse-item" href="404.html">404 Page</a>
-	<a class="collapse-item" href="blank.html">Blank Page</a>
-	</div>
-	</div>
-	</li> *@
+    <!-- Divider -->
+    <hr class="sidebar-divider d-none d-md-block">
 
-	<!-- Nav Item - Charts -->
+    <!-- Nav Item - Logout -->
+    <li class="nav-item">
+        <form id="logoutForm" asp-area="Identity" asp-page="/Account/Logout" onsubmit="return confirm('Are you sure you want to logout?');">
+            <button type="submit" class="nav-link bg-gradient-primary border-0" style="width: 100%; text-align: left;">
+                <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                <span>Logout</span>
+            </button>
+        </form>
+    </li>
 
-	<li class="nav-item">
-		@if (isAdmin)
-		{
-			<a class="nav-link" href="/Building/AddBuilding">
-				<i class="bi bi-plus-circle"></i>
-				<span>Add Building</span>
-			</a>
-		}
-		else
-		{
-			<span class="nav-link" title="You don't have authoriy'" style="cursor: not-allowed;">
-				<i class="bi bi-plus-circle"></i>
-				<span>Add Building</span>
-			</span>
-		}
-	</li>
-	<li class="nav-item">
-		<a class="nav-link" href="/Report/ListReports">
-			<i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-			<span>Requested Reports</span>
-		</a>
-	</li>
-
-	<!-- Divider -->
-	<hr class="sidebar-divider d-none d-md-block">
-	<li class="nav-item">
-		<form id="logoutForm" asp-area="Identity" asp-page="/Account/Logout" onsubmit="return confirm('Are you sure you want to logout?');">
-			<button type="submit" class="nav-link bg-gradient-primary" style="border-color:#4e73df">
-				<i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-				<span>Logout</span>
-			</button>
-		</form>
-	</li>
-	<!-- Divider -->
-	<hr class="sidebar-divider d-none d-md-block">
+    <!-- Divider -->
+    <hr class="sidebar-divider d-none d-md-block">
 </ul>
