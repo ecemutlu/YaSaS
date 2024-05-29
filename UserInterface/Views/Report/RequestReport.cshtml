@@ -1,55 +1,81 @@
 ﻿@using EntityLayer.Concrete
 @model RequestedReport
 @{
-	ViewData["Title"] = "Request Report";
+    ViewData["Title"] = "Request Report";
 }
 
 <head>
-	@await Html.PartialAsync("~/Views/Shared/_HeaderIndex.cshtml")
-	<!-- Custom styles for this page -->
-	
+    @await Html.PartialAsync("~/Views/Shared/_HeaderIndex.cshtml")
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <!-- Bootstrap Datepicker CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
+    <!-- Custom styles for this page -->
 </head>
 <body>
-	<div class="container justify-content-center">
-		<form  asp-action="RequestReport" method="post" asp-validation-summary="ModelOnly" class="tex login-form col-md-6">
-			<div class="column ">
-				<div class="row">					
-					<div class="form-group col-md-4">
-						<label class="control-label">Date Range</label>
-						<div>
-							@Html.TextBoxFor(m => m.DateRange, new { @class = "form-control" })
-						</div>
-					</div>
-					<div class="form-group col-md-4">
-						<label class="control-label">Report Type</label>
-						<div>
-							@Html.DropDownListFor(m => m.ReportType, new List<SelectListItem>
-							{
-							new SelectListItem {Text="PDF",Value="PDF"},
-							}, "Please select", new { @class = "form-control" })
-						</div>						
-					</div>
-					<div class="form-group col-md-4 ">
-						<button id="login-submit" type="submit" class="btn btn-primary btn-sm rounded submit">Generate</button>
-					</div>
-				</div>
-			</div>
-		</form>
-		@if (ViewBag.Errors != null)
-		{
-			<div class="alert alert-danger">
-				<ul>
-					@foreach (var error in ViewBag.Errors)
-					{
-						<li>@error</li>
-					}
-				</ul>
-			</div>
-		}
-	</div>
-	<script src="~/login-form-18/js/jquery.min.js"></script>
-	<script src="~/login-form-18/js/popper.js"></script>
-	<script src="~/login-form-18/js/bootstrap.min.js"></script>
-	<script src="~/login-form-18/js/main.js"></script>
+    <div class="container justify-content-center">
+        <form asp-action="RequestReport" method="post" asp-validation-summary="ModelOnly" class="tex login-form col-md-6">
+            <div class="column">
+                <div class="row">                   
+                    <div class="form-group col-md-4" id="datepicker">
+                        <label class="control-label">Date Range</label>
+                        <div class="input-group">
+                            @Html.TextBoxFor(m => m.DateRange, new { @class = "form-control datepicker" })
+                            <div class="input-group-append">
+                                <span class="input-group-text bg-light d-block">
+                                    <i class="fa fa-calendar"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label class="control-label">Report Type</label>
+                        <div>
+                            @Html.DropDownListFor(m => m.ReportType, new List<SelectListItem>
+                            {
+                            new SelectListItem { Text = "PDF", Value = "PDF" },
+                            }, "Please select", new { @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label class="control-label"></label>
+                        <div>
+                            <button id="login-submit" type="submit" class="btn btn-primary btn-sm rounded submit">Generate</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        @if (ViewBag.Errors != null)
+        {
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach (var error in ViewBag.Errors)
+                    {
+                        <li>@error</li>
+                    }
+                </ul>
+            </div>
+        }
+    </div>
 
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <!-- Bootstrap JS -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+    <!-- Bootstrap Datepicker JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.dateRange').datepicker({
+                format: 'yyyy-mm-dd',
+                autoclose: true,
+                todayHighlight: true
+            });
+        });
+    </script>
+    <!-- Other JS files -->
+    <script src="~/login-form-18/js/bootstrap.min.js"></script>
+    <script src="~/login-form-18/js/popper.js"></script>
+    <script src="~/login-form-18/js/main.js"></script>
 </body>

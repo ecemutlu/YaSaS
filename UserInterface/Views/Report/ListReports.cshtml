@@ -1,52 +1,86 @@
 ﻿@using EntityLayer.Concrete
-@model List<RequestedReport>
 
 @{
-	ViewData["Title"] = "List Reports";
+    ViewData["Title"] = "List Reports";
+    var Reports = (IEnumerable<RequestedReport>?)ViewData["ReportRequests"];
 }
 
 <head>
-	@await Html.PartialAsync("~/Views/Shared/_HeaderIndex.cshtml")
-	<!-- Custom styles for this page -->
-	<link href="~/startbootstrap-sb-admin-2-gh-pages/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+    @await Html.PartialAsync("~/Views/Shared/_HeaderIndex.cshtml")
+    <!-- Custom styles for this page -->
+    <link href="~/startbootstrap-sb-admin-2-gh-pages/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
 </head>
 <div class="col-md-4">
-	<h3>Requested Reports</h3>
+    <h3>Requested Reports</h3>
 </div>
 @await Html.PartialAsync("~/Views/Report/RequestReport.cshtml")
 
 <div class="card-body">
-	<div class="table-responsive">
-		<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-			<tr>
-				<th>#</th>
-				<th>Date Range</th>
-				<th>Report Type</th>
-				<th>Status</th>
-				<th>Report</th>
-			</tr>
-			@if (Model == null || !Model.Any())
-			{
-				<tr>
-					<td>No report has been requested yet</td>
-				</tr>
-			}
-			else{
-				@foreach (var i in Model)
-				{
-					<tr>
-						<td>@i.DateRange</td>
-						<td>@i.ReportType</td>
-						<td>@i.Status</td>
-						<td>
-							@if (i.Status == "Completed")
-							{
-								<a href="@i.ReportUrl" class="btn btn-primary">Show Report</a>
-							}
-						</td>
-					</tr>
-				}
-			}					
-		</table>
-	</div>
+    <div class="table-responsive">
+        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Date Range</th>
+                    <th>Report Type</th>
+                    <th>Status</th>
+                    <th>Report</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Reports == null || !Reports.Any())
+                {
+                    <tr>
+                        <td colspan="5">No report has been requested yet</td>
+                    </tr>
+                }
+                else
+                {
+                    foreach (var report in Reports)
+                    {
+                        <tr>
+                            <td>@report.Id</td>
+                            <td>@report.DateRange</td>
+                            <td>@report.ReportType</td>
+                            <td>@report.Status</td>
+                            <td>
+                                @if (report.Status == "Completed")
+                                {
+                                    <button class="btn btn-primary show-report" data-url="@report.ReportUrl">Show Report</button>
+                                }                               
+                            </td>                           
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
 </div>
+<!-- Modal Structure -->
+<div class="modal fade" id="imageModal" tabindex="-1" role="dialog" aria-labelledby="imageModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="imageModalLabel">Report</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body text-center">
+                <img id="modalImage" src="" alt="Report Image" class="img-fluid" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('.show-report').on('click', function () {
+            var reportUrl = $(this).data('url');
+            $('#modalImage').attr('src', reportUrl);
+            $('#imageModal').modal('show');
+        });
+    });
+</script>
