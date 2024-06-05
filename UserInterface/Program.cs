@@ -1,7 +1,8 @@
-﻿using DataAccessLayer.Context;
+using DataAccessLayer.Context;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages;
@@ -18,18 +19,21 @@ var connectionString = builder.Configuration.GetConnectionString("conn");
 // DbContext'ler için SQL Server bağlantısı kuruluyor
 builder.Services.AddDbContext<mydbContext>(options =>
 	options.UseSqlServer(connectionString));
+
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 	options.UseSqlServer(connectionString));
+
+
+builder.Services.AddTransient<IEmailSender,SmtpEmailSender>();
+builder.Services.Configure<SmtpOptions>(builder.Configuration.GetRequiredSection(SmtpOptions.SECTION_NAME));
+
 
 // Eklenen HttpClient servisi
 builder.Services.AddHttpClient<CityTownService>(client =>
 {
 	client.BaseAddress = new Uri("https://turkiyeapi.dev/"); // Base address ayarlanıyor
 });
-builder.Services.AddHttpClient<CityController>(client =>
-{
-    client.BaseAddress = new Uri("https://turkiyeapi.dev/");
-});
+
 
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
