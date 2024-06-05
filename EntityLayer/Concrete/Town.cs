@@ -20,11 +20,8 @@ namespace EntityLayer.Concrete
 		[ForeignKey("City")]
         public int CityId { get; set; }
 
-        //[JsonProperty("population")]
-        //public int Population { get; set; }
-
-        //[JsonProperty("area")]
-        //public int Area { get; set; }
+        // Navigation property olarak City ekle
+        public virtual City City { get; set; }
 
     }
 }

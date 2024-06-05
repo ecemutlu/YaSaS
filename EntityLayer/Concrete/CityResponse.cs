@@ -9,8 +9,8 @@ namespace EntityLayer.Concrete
 {
 	public class CityResponse
 	{
-		[JsonProperty("status")]
-		public string Status { get; set; }
+		//[JsonProperty("status")]
+		//public string Status { get; set; }
 
 		[JsonProperty("data")]
 		public List<City> Data { get; set; }

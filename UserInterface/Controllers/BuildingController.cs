@@ -8,6 +8,9 @@ using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using UserInterface.Models;
 using UserInterface.Services;
+using Microsoft.Extensions.Logging;
+
+
 
 namespace UserInterface.Controllers
 {
@@ -16,19 +19,15 @@ namespace UserInterface.Controllers
     {
 		private readonly mydbContext _context;
 		private readonly CityTownService _cityTownService;
+        private readonly ILogger<BuildingController> _logger;
 
-		// Constructor: CityTownService bağımlılığını ekliyoruz
-		public BuildingController(mydbContext context, CityTownService cityTownService)
+        // Constructor: CityTownService bağımlılığını ekliyoruz
+        public BuildingController(mydbContext context, CityTownService cityTownService, ILogger<BuildingController> logger)
 		{
 			_context = context;
 			_cityTownService = cityTownService;
-		}
-		
-		//[HttpGet]
-		//public IActionResult AddBuilding()
-		//{
-		//	return View();
-		//}
+            _logger = logger;
+        }
 		
 		// GET: /Admin/Building/AddBuilding
 		// Bina ekleme sayfasını gösteren action metodu
@@ -63,63 +62,80 @@ namespace UserInterface.Controllers
 		// POST: /Admin/Building/AddBuilding
 		// Bina ekleme işlemini yapan action metodu
 		[HttpPost]
-		public async Task<IActionResult> AddBuilding([Bind("Name,NumberOfFloor,CityId,TownId,Address")] BuildingDto building)
-		{
-			if (ModelState.IsValid)
-			{
-				// Bina modelini veritabanına ekliyoruz
-				_context.Building.Add(new Building
-				{
-					Name = building.Name,
-					NumofFloor = building.NumofFloor,
-					CityId = building.CityId,
-					TownId = building.TownId,
-					Address = building.Address
-				});
-				await _context.SaveChangesAsync();
+        public async Task<IActionResult> AddBuilding([Bind("Name,NumofFloor,CityId,TownId,Address")] BuildingDto building)
+        {
+            _logger.LogInformation($"Received building data: {JsonConvert.SerializeObject(building)}");
+            if (!ModelState.IsValid)
+            {
+                _logger.LogError("Model state is invalid.");
+                return View(building);
+            }
 
-				return RedirectToAction("Index", "Home"); // Örnek bir yönlendirme
-			}
+            using (var transaction = _context.Database.BeginTransaction())
+            {
+                try
+                {
+                    // City önceden var mı kontrol et, yoksa API'den çek ve ekle
+                    var city = await _context.City.FindAsync(building.CityId);
+                    if (city == null)
+                    {
+                        city = await _cityTownService.GetCityById(building.CityId);
+                        if (city == null)
+                        {
+                            ModelState.AddModelError("", "City cannot be found.");
+                            return View(building);
+                        }
+                        _context.City.Add(city);
+                        await _context.SaveChangesAsync();
+                    }
 
-			// Şehir ve ilçe bilgilerini tekrar yüklemek için
-			building.CityList = await _cityTownService.GetCities();
-			building.TownList = new List<SelectListItem>();
+                    // Town önceden var mı kontrol et, yoksa API'den çek ve ekle
+                    var town = await _context.Town.FindAsync(building.TownId);
+                    if (town == null)
+                    {
+                        town = await _cityTownService.GetTownById(building.TownId);
+                        if (town == null || town.CityId != building.CityId)
+                        {
+                            ModelState.AddModelError("", "Town cannot be found or does not match the city.");
+                            return View(building);
+                        }
+                        _context.Town.Add(town);
+                        await _context.SaveChangesAsync();
+                    }
 
-			// ModelState.IsValid false ise, tekrar AddBuilding view'ını göster
-			return View(building);
-		}
+                    // Building nesnesini oluştur ve ekle
+                    var newBuilding = new Building
+                    {
+                        Name = building.Name,
+                        NumofFloor = building.NumofFloor,
+                        CityId = building.CityId,
+                        TownId = building.TownId,
+                        Address = building.Address
+                    };
+                    _context.Building.Add(newBuilding);
+                    await _context.SaveChangesAsync();
+                    transaction.Commit();
 
-		// GET: /Admin/Building/GetTowns
-		// Şehir seçildiğinde ilçeleri döndüren action metodu
-		[HttpGet]
+                    return RedirectToAction("Index", "Home");
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError($"An error occurred: {ex.Message}");
+                    transaction.Rollback();
+                    ModelState.AddModelError("", "An error occurred while saving the building.");
+                    return View(building);
+                }
+            }
+        }
+
+        // GET: /Admin/Building/GetTowns
+        // Şehir seçildiğinde ilçeleri döndüren action metodu
+        [HttpGet]
 		public async Task<IActionResult> GetTowns(int cityId)
 		{
 			// Seçilen şehir ID'sine göre ilçe listesini alıyoruz
 			var towns = await _cityTownService.GetTowns(cityId);
 			return Json(towns); // JSON formatında ilçe listesini döndürüyoruz
 		}
-
-
-		
-
-        //[HttpPost]
-        //public async Task<IActionResult> AddBuilding([Bind("Name,NumberOfFloor,CityId,TownId")] BuildingDto building)
-        //{
-        //	HttpResponseMessage response = await _httpClient.GetAsync("https://turkiyeapi.dev/api/v1/provinces");
-
-        //	//// Check if the request was successful
-        //	//if (response.IsSuccessStatusCode)
-        //	//{
-        //	//	// Read the response content as string
-        //	//	string apiResponse = await response.Content.ReadAsStringAsync();
-        //	//	// Parse the response JSON or process the response data as needed
-        //	//	// Example: Deserialize JSON response to a model
-        //	//	var data = JsonConvert.DeserializeObject<City>(apiResponse);
-        //	//	ViewData["City"]=data;
-
-        //		_context.Building.Add(building);
-        //		await _context.SaveChangesAsync();
-        //		return View(building);
-        //	}
     }
 }
