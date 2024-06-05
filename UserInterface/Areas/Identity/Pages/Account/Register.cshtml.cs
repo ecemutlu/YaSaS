@@ -31,24 +31,24 @@ namespace UserInterface.Areas.Identity.Pages.Account
         private readonly SignInManager<CustomUser> _signInManager;
         private readonly UserManager<CustomUser> _userManager;
         private readonly IUserStore<CustomUser> _userStore;
-        //private readonly IUserEmailStore<IdentityUser> _emailStore;
+        private readonly IUserEmailStore<CustomUser> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
-        //private readonly IEmailSender _emailSender;
+        private readonly IEmailSender _emailSender;
         private readonly mydbContext _mydbContext;
 
         public RegisterModel(
             UserManager<CustomUser> userManager,
-            IUserStore<CustomUser> userStore,
+            IUserStore<CustomUser> userStore,            
             SignInManager<CustomUser> signInManager,
-            ILogger<RegisterModel> logger,mydbContext mydbContext
+            ILogger<RegisterModel> logger, IEmailSender emailSender, mydbContext mydbContext
             )
         {
             _userManager = userManager;
             _userStore = userStore;
-            //_emailStore = GetEmailStore();
+            _emailStore = GetEmailStore();
             _signInManager = signInManager;
             _logger = logger;
-            //_emailSender = emailSender;
+            _emailSender = emailSender;
             _mydbContext= mydbContext;
         }
 
@@ -137,7 +137,7 @@ namespace UserInterface.Areas.Identity.Pages.Account
 				};
 
 				await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
-                //await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
+                await _emailStore.SetEmailAsync(user, Input.Username, CancellationToken.None);
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 
 
@@ -154,8 +154,8 @@ namespace UserInterface.Areas.Identity.Pages.Account
                         values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
                         protocol: Request.Scheme);
 
-                    //await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                    //    $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                    await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
+                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {

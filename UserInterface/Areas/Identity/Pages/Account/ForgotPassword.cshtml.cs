@@ -55,7 +55,7 @@ namespace UserInterface.Areas.Identity.Pages.Account
             if (ModelState.IsValid)
             {
                 var user = await _userManager.FindByEmailAsync(Input.Email);
-                if (user == null || !(await _userManager.IsEmailConfirmedAsync(user)))
+                if (user == null /*|| !(await _userManager.IsEmailConfirmedAsync(user))*/)
                 {
                     // Don't reveal that the user does not exist or is not confirmed
                     return RedirectToPage("./ForgotPasswordConfirmation");
@@ -71,10 +71,10 @@ namespace UserInterface.Areas.Identity.Pages.Account
                     values: new { area = "Identity", code },
                     protocol: Request.Scheme);
 
-                //await _emailsender.sendemailasync(
-                //    input.email,
-                //    "reset password",
-                //    $"please reset your password by <a href='{htmlencoder.default.encode(callbackurl)}'>clicking here</a>.");
+                await _emailSender.SendEmailAsync(
+                    Input.Email,
+                    "reset password",
+                    $"please reset your password by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
                 return RedirectToPage("./ForgotPasswordConfirmation");
             }
