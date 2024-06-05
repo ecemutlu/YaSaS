@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages;
+using UserInterface.Controllers;
 using UserInterface.Data;
 using UserInterface.Models;
 using UserInterface.Services;
@@ -34,11 +35,6 @@ builder.Services.AddHttpClient<CityTownService>(client =>
 });
 
 
-// Yorum: CityTownService eklenmesi
-// Eğer servis Lifetime'ını kontrol etmek istiyorsanız, aşağıdaki gibi Scoped olarak da ekleyebilirsiniz.
-// builder.Services.AddScoped<CityTownService>();
-
-
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
@@ -64,6 +60,19 @@ builder.Services.AddAuthentication(options =>  // Cookie tabanlı kimlik doğrul
     options.LoginPath = "/Account/Login"; // Kullanıcı yetkisiz bir sayfaya erişmeye çalışırsa yönlendirilecek sayfa
     options.ExpireTimeSpan = TimeSpan.FromMinutes(60); // Cookie'nin geçerlilik süresi
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 var app = builder.Build();
 
@@ -104,8 +113,6 @@ app.MapControllerRoute(
 	pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.MapRazorPages();
-
-
 
 app.Run();
 

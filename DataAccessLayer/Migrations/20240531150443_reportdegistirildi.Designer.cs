@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccessLayer.Migrations
 {
     [DbContext(typeof(mydbContext))]
-    [Migration("20240522133103_requestedReportUpdated")]
-    partial class requestedReportUpdated
+    [Migration("20240531150443_reportdegistirildi")]
+    partial class reportdegistirildi
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -36,22 +36,22 @@ namespace DataAccessLayer.Migrations
                     b.Property<string>("Address")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("CityId")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("CityId")
+                        .HasColumnType("int");
 
-                    b.Property<float>("Latitude")
+                    b.Property<float?>("Latitude")
                         .HasColumnType("real");
 
-                    b.Property<float>("Longitude")
+                    b.Property<float?>("Longitude")
                         .HasColumnType("real");
 
-                    b.Property<float>("MaxX")
+                    b.Property<float?>("MaxX")
                         .HasColumnType("real");
 
-                    b.Property<float>("MaxY")
+                    b.Property<float?>("MaxY")
                         .HasColumnType("real");
 
-                    b.Property<float>("MaxZ")
+                    b.Property<float?>("MaxZ")
                         .HasColumnType("real");
 
                     b.Property<string>("Name")
@@ -60,8 +60,8 @@ namespace DataAccessLayer.Migrations
                     b.Property<int>("NumofFloor")
                         .HasColumnType("int");
 
-                    b.Property<string>("TownId")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("TownId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -77,6 +77,7 @@ namespace DataAccessLayer.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -115,18 +116,16 @@ namespace DataAccessLayer.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("DateRange")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ReportType")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ReportUrl")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Status")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserId")
@@ -156,8 +155,6 @@ namespace DataAccessLayer.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BuildingId");
-
                     b.ToTable("Sensor");
                 });
 
@@ -173,11 +170,10 @@ namespace DataAccessLayer.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CityId");
 
                     b.ToTable("Town");
                 });
@@ -389,28 +385,6 @@ namespace DataAccessLayer.Migrations
                         .IsRequired();
 
                     b.Navigation("Sensor");
-                });
-
-            modelBuilder.Entity("EntityLayer.Concrete.Sensor", b =>
-                {
-                    b.HasOne("EntityLayer.Concrete.Building", "Building")
-                        .WithMany()
-                        .HasForeignKey("BuildingId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Building");
-                });
-
-            modelBuilder.Entity("EntityLayer.Concrete.Town", b =>
-                {
-                    b.HasOne("EntityLayer.Concrete.City", "City")
-                        .WithMany()
-                        .HasForeignKey("CityId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("City");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
