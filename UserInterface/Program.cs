@@ -1,4 +1,5 @@
 using DataAccessLayer.Context;
+using EntityLayer.Concrete;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
@@ -33,7 +34,10 @@ builder.Services.AddHttpClient<CityTownService>(client =>
 {
 	client.BaseAddress = new Uri("https://turkiyeapi.dev/"); // Base address ayarlanıyor
 });
-
+builder.Services.AddHttpClient<CityController>(client =>
+{
+    client.BaseAddress = new Uri("https://turkiyeapi.dev/"); // Base address ayarlanıyor
+});
 
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
