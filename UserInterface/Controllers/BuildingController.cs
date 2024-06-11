@@ -14,7 +14,7 @@ using Microsoft.Extensions.Logging;
 
 namespace UserInterface.Controllers
 {
-    //[Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin")]
     public class BuildingController : Controller
     {
 		private readonly mydbContext _context;

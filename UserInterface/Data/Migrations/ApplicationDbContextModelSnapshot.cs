@@ -36,19 +36,19 @@ namespace UserInterface.Data.Migrations
                     b.Property<int>("CityId")
                         .HasColumnType("int");
 
-                    b.Property<float>("Latitude")
+                    b.Property<float?>("Latitude")
                         .HasColumnType("real");
 
-                    b.Property<float>("Longitude")
+                    b.Property<float?>("Longitude")
                         .HasColumnType("real");
 
-                    b.Property<float>("MaxX")
+                    b.Property<float?>("MaxX")
                         .HasColumnType("real");
 
-                    b.Property<float>("MaxY")
+                    b.Property<float?>("MaxY")
                         .HasColumnType("real");
 
-                    b.Property<float>("MaxZ")
+                    b.Property<float?>("MaxZ")
                         .HasColumnType("real");
 
                     b.Property<string>("Name")
@@ -63,6 +63,38 @@ namespace UserInterface.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Building");
+                });
+
+            modelBuilder.Entity("EntityLayer.Concrete.RequestedReport", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("DateRange")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ReportType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<byte[]>("ReportUrl")
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<string>("Status")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("RequestedReport");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -255,6 +287,8 @@ namespace UserInterface.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("BuildingId");
+
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
 
@@ -315,6 +349,17 @@ namespace UserInterface.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("UserInterface.Models.CustomUser", b =>
+                {
+                    b.HasOne("EntityLayer.Concrete.Building", "Building")
+                        .WithMany()
+                        .HasForeignKey("BuildingId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Building");
                 });
 #pragma warning restore 612, 618
         }

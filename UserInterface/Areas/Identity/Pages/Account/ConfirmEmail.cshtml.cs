@@ -11,14 +11,15 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
+using UserInterface.Models;
 
 namespace UserInterface.Areas.Identity.Pages.Account
 {
     public class ConfirmEmailModel : PageModel
     {
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<CustomUser> _userManager;
 
-        public ConfirmEmailModel(UserManager<IdentityUser> userManager)
+        public ConfirmEmailModel(UserManager<CustomUser> userManager)
         {
             _userManager = userManager;
         }
@@ -33,19 +34,37 @@ namespace UserInterface.Areas.Identity.Pages.Account
         {
             if (userId == null || code == null)
             {
-                return RedirectToPage("/Index");
+                // Hata loglama
+                Console.WriteLine("User ID veya kod null.");
+                return RedirectToPage("/Home/Index");
             }
 
             var user = await _userManager.FindByIdAsync(userId);
             if (user == null)
             {
+                // Hata loglama
+                Console.WriteLine($"Kullanıcı '{userId}' ID'si ile bulunamadı.");
                 return NotFound($"Unable to load user with ID '{userId}'.");
             }
 
-            code = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(code));
-            var result = await _userManager.ConfirmEmailAsync(user, code);
-            StatusMessage = result.Succeeded ? "Thank you for confirming your email." : "Error confirming your email.";
+            try
+            {
+                code = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(code));
+                var result = await _userManager.ConfirmEmailAsync(user, code);
+                StatusMessage = result.Succeeded ? "Thank you for confirming your email." : "Error confirming your email.";
+
+                // İşlem sonucunu loglama
+                Console.WriteLine($"Email onay sonucu: {StatusMessage}");
+            }
+            catch (Exception ex)
+            {
+                // Hata yakalama ve loglama
+                Console.WriteLine($"Email onaylama sırasında hata oluştu: {ex.Message}");
+                StatusMessage = "Error confirming your email.";
+            }
+
             return Page();
         }
+
     }
 }

@@ -1,5 +1,6 @@
 ﻿@using EntityLayer.Concrete
 
+
 @{
     ViewData["Title"] = "List Reports";
     var Reports = (IEnumerable<RequestedReport>?)ViewData["ReportRequests"];
@@ -44,9 +45,10 @@
                             <td>@report.ReportType</td>
                             <td>@report.Status</td>
                             <td>
-                                @if (report.Status == "Completed")
+                                @if (report.Status == "Done")
                                 {
-                                    <button class="btn btn-primary show-report" data-url="@report.ReportUrl">Show Report</button>
+                                    <button class="btn btn-primary show-report">Show Report</button>
+                                    @* <button class="btn btn-primary show-report" data-url="@Url.Action("GetReportImage", "Report", new { id = report.Id })">Show Report</button> *@
                                 }                               
                             </td>                           
                         </tr>
@@ -67,7 +69,7 @@
                 </button>
             </div>
             <div class="modal-body text-center">
-                <img id="modalImage" src="" alt="Report Image" class="img-fluid" />
+                <img id="modalImage" src="~/report/report_image.png" alt="Report Image" class="img-fluid" />
             </div>
         </div>
     </div>

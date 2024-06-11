@@ -3,10 +3,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using UserInterface.Models;
 using Microsoft.AspNetCore.Identity; // Identity kütüphanesini ekleyin
-using System.Threading.Tasks; // Asenkron iþlemler için gerekli
 using Microsoft.EntityFrameworkCore;
 using UserInterface.Data;
-using System;
 
 namespace UserInterface.Controllers
 {
@@ -35,32 +33,32 @@ namespace UserInterface.Controllers
             if (user != null)
             {
                 ViewBag.UserEmail = user.Email;
-                var building = await _context.Building.FindAsync(user.BuildingId); // Bina bilgisini çekme
+                var building = await _context.Building.FindAsync(user.BuildingId); 
                 if (building != null)
                 {
-                    ViewBag.BuildingName = building.Name; // Bina adýný ViewBag'e ata
-                    ViewBag.NumofFloor = building.NumofFloor; // Kat sayýsý bilgisini çekme
+                    ViewBag.BuildingName = building.Name; 
+                    ViewBag.NumofFloor = building.NumofFloor; 
                 }
                 else
                 {
-                    ViewBag.BuildingName = "Bina bilgisi bulunamadý";
-                    ViewBag.NumofFloor = "Kat bilgisi bulunamadý";
+                    ViewBag.BuildingName = "Building information couldn't found";
+                    ViewBag.NumofFloor = "Floor information couldn't found";
                 }
                 // En son rapor isteðini al
                 var lastReportRequest = await _context.RequestedReport
                     .Where(r => r.UserId == user.Id)
-                    .OrderByDescending(r => r.Id) // En son istek
-                    .Select(r => r.Status) // Sadece status alanýný al
+                    .OrderByDescending(r => r.Id) 
+                    .Select(r => r.Status) 
                     .FirstOrDefaultAsync();
 
-                ViewBag.PendingRequestStatus = lastReportRequest ?? "Rapor isteði bulunamadý"; // NULL kontrolü
+                ViewBag.PendingRequestStatus = lastReportRequest ?? "No report request found";
             }
             else
             {
-                ViewBag.UserEmail = "Kullanýcý bilgisi çekilemedi";
-                ViewBag.BuildingName = "Bina bilgisi bulunamadý";
-                ViewBag.NumofFloor = "Kat bilgisi bulunamadý";
-                ViewBag.PendingRequestStatus = "Rapor isteði bulunamadý";
+                ViewBag.UserEmail = "Couldn't fetch user information";
+                ViewBag.BuildingName = "Building information couldn't found";
+                ViewBag.NumofFloor = "Floor information couldn't found";
+                ViewBag.PendingRequestStatus = "Report request doesn't found";
             }
             return View();
         }

@@ -1,4 +1,5 @@
-﻿using DataAccessLayer.Context;
+﻿using System.Drawing;
+using DataAccessLayer.Context;
 using EntityLayer.Concrete;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -24,12 +25,27 @@ public class ReportController : Controller
             return Unauthorized();
         }
 
-        var requests = await _context.RequestedReport
-                                     .Where(r => r.UserId == user.Id)
+        var requests = await _context.RequestedReport.Where(r => r.UserId == user.Id)
                                      .ToListAsync();
+
         ViewData["ReportRequests"] = requests;
 
         return View();
+    }
+    public async Task<IActionResult> GetReportImage(int id)
+    {
+        var report = await _context.RequestedReport.FindAsync(id);
+        if (report == null || report.ReportUrl == null)
+        {
+            return NotFound("Image data not found.");
+        }
+       
+        using (var ms = new MemoryStream())
+        {           
+            report.ReportUrl = ms.ToArray();
+        }
+
+        return File(report.ReportUrl, "image/png"); // Adjust MIME type as needed
     }
 
     public IActionResult RequestReport()
@@ -49,10 +65,9 @@ public class ReportController : Controller
         if (user == null)
         {
             return Unauthorized();
-        }
-
+        }      
         request.UserId = user.Id;
-        request.Status = "Request Sent";
+        request.Status = "In Progress";
 
         _context.RequestedReport.Add(request);
         await _context.SaveChangesAsync();

@@ -65,19 +65,6 @@ builder.Services.AddAuthentication(options =>  // Cookie tabanlı kimlik doğrul
     options.ExpireTimeSpan = TimeSpan.FromMinutes(60); // Cookie'nin geçerlilik süresi
 });
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

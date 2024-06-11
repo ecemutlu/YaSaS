@@ -9,16 +9,16 @@ using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace EntityLayer.Concrete
 {
-	[Microsoft.EntityFrameworkCore.Index("UserId")]
-	public class RequestedReport
-	{
-		[Key]
-		public int Id { get; set; }
-		[ForeignKey("AspNetUsers")]
-		public string UserId { get; set; }
-		public required string ReportType { get; set; }
-		public required string? DateRange { get; set; }
-		public string? Status { get; set; }
-		public string? ReportUrl { get; set; }
-	}
+    [Microsoft.EntityFrameworkCore.Index("UserId")]
+    public class RequestedReport
+    {
+        [Key]
+        public int Id { get; set; }
+        [ForeignKey("AspNetUsers")]
+        public string? UserId { get; set; }
+        public required string ReportType { get; set; }
+        public string DateRange { get; set; }
+        public string? Status { get; set; }
+        public byte[]? ReportUrl { get; set; }
+    }
 }

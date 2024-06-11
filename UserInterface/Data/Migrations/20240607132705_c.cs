@@ -2,36 +2,14 @@
 
 #nullable disable
 
-namespace DataAccessLayer.Migrations
+namespace UserInterface.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class reportdegistirildi : Migration
+    public partial class c : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            
-
-            
-
-            migrationBuilder.AlterColumn<string>(
-                name: "UserId",
-                table: "RequestedReport",
-                type: "nvarchar(450)",
-                nullable: false,
-                defaultValue: "",
-                oldClrType: typeof(string),
-                oldType: "nvarchar(450)",
-                oldNullable: true);
-
-            migrationBuilder.AlterColumn<string>(
-                name: "DateRange",
-                table: "RequestedReport",
-                type: "nvarchar(max)",
-                nullable: true,
-                oldClrType: typeof(string),
-                oldType: "nvarchar(max)");
-
             migrationBuilder.AlterColumn<float>(
                 name: "MaxZ",
                 table: "Building",
@@ -71,28 +49,47 @@ namespace DataAccessLayer.Migrations
                 nullable: true,
                 oldClrType: typeof(float),
                 oldType: "real");
+
+            migrationBuilder.AlterColumn<float>(
+                name: "UserId",
+                table: "RequestedReport",
+                type: "nvarchar(450)",
+                nullable: true,
+                oldClrType: typeof(string),
+                oldType: "real");            
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AspNetUsers_BuildingId",
+                table: "AspNetUsers",
+                column: "BuildingId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RequestedReport_UserId",
+                table: "RequestedReport",
+                column: "UserId");
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_AspNetUsers_Building_BuildingId",
+                table: "AspNetUsers",
+                column: "BuildingId",
+                principalTable: "Building",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Cascade);
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AlterColumn<string>(
-                name: "UserId",
-                table: "RequestedReport",
-                type: "nvarchar(450)",
-                nullable: true,
-                oldClrType: typeof(string),
-                oldType: "nvarchar(450)");
+            migrationBuilder.DropForeignKey(
+                name: "FK_AspNetUsers_Building_BuildingId",
+                table: "AspNetUsers");
 
-            migrationBuilder.AlterColumn<string>(
-                name: "DateRange",
-                table: "RequestedReport",
-                type: "nvarchar(max)",
-                nullable: false,
-                defaultValue: "",
-                oldClrType: typeof(string),
-                oldType: "nvarchar(max)",
-                oldNullable: true);
+            migrationBuilder.DropTable(
+                name: "RequestedReport");
+
+            migrationBuilder.DropIndex(
+                name: "IX_AspNetUsers_BuildingId",
+                table: "AspNetUsers");
 
             migrationBuilder.AlterColumn<float>(
                 name: "MaxZ",
@@ -143,10 +140,6 @@ namespace DataAccessLayer.Migrations
                 oldClrType: typeof(float),
                 oldType: "real",
                 oldNullable: true);
-
-            
-
-            
         }
     }
 }
